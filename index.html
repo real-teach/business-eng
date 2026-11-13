@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business English — Vocabulary Practice</title>
+
+<style>
+:root {
+  --navy: #172b4d;
+  --blue: #315b96;
+  --pale: #edf3fb;
+  --ink: #243247;
+  --muted: #65748b;
+  --line: #d8e1ee;
+  --green: #24734a;
+  --red: #b43b3b;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: var(--ink);
+  font: 16px/1.55 Arial, sans-serif;
+}
+
+header {
+  background: linear-gradient(135deg, #172b4d, #315b96);
+  color: white;
+  padding: 32px 20px 26px;
+}
+
+.hero {
+  max-width: 1050px;
+  margin: auto;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(27px, 5vw, 40px);
+}
+
+header p {
+  margin: 0;
+  color: #e4ebf6;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: white;
+  border-bottom: 1px solid var(--line);
+  padding: 10px 14px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+nav a {
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: bold;
+  padding: 7px 10px;
+  border-radius: 20px;
+  background: var(--pale);
+}
+
+nav a:hover { background: #dce8f7; }
+
+main {
+  max-width: 1050px;
+  margin: 24px auto;
+  padding: 0 16px 50px;
+}
+
+section {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px #20385a0a;
+  scroll-margin-top: 76px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: var(--navy);
+  font-size: 22px;
+}
+
+.instructions {
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.item {
+  padding: 13px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.item:last-child { border-bottom: 0; }
+
+.prompt {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type="text"], textarea {
+  font: inherit;
+  border: 1px solid #bdcadd;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: white;
+  color: var(--ink);
+  max-width: 100%;
+}
+
+input[type="text"] { width: min(100%, 430px); }
+
+textarea {
+  width: 100%;
+  min-height: 64px;
+  resize: vertical;
+}
+
+.blank {
+  width: 155px !important;
+  display: inline-block;
+  margin: 3px 2px;
+}
+
+.wordbank {
+  background: #f0f5fc;
+  border: 1px dashed #9db2d0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0 16px;
+  font-weight: bold;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  background: var(--blue);
+  color: white;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 10px 6px 0 0;
+}
+
+button:hover { filter: brightness(1.08); }
+
+button.secondary {
+  background: #e8eef7;
+  color: var(--navy);
+}
+
+.feedback {
+  margin-top: 12px;
+  font-weight: bold;
+  min-height: 22px;
+}
+
+.correct { color: var(--green); }
+.incorrect { color: var(--red); }
+
+.answer {
+  display: none;
+  background: #f1f8f3;
+  border-left: 4px solid #63a77c;
+  padding: 10px 13px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+.answer.show { display: block; }
+
+/* Карточки */
+
+.cards-intro {
+  margin: 8px 0 16px;
+  color: var(--muted);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.flip-card {
+  min-height: 190px;
+  perspective: 1000px;
+  cursor: pointer;
+  outline: none;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  transition: transform .55s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #cbd8e9;
+}
+
+.card-front {
+  background: linear-gradient(145deg, #edf4ff, #dce8f8);
+  color: var(--navy);
+}
+
+.card-back {
+  background: linear-gradient(145deg, #eaf7ef, #d8eee0);
+  transform: rotateY(180deg);
+  color: #205c3c;
+}
+
+.card-face small {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: .7;
+  margin-bottom: 8px;
+}
+
+.card-face strong {
+  font-size: 21px;
+  line-height: 1.3;
+}
+
+.card-face span {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 12px;
+}
+
+@media(max-width:600px) {
+  section { padding: 17px; }
+  nav { padding: 8px; }
+  .blank { width: 125px !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="hero">
+    <h1>Business English — Vocabulary Practice</h1>
+    <p>Работа, бизнес, собеседование и деловое общение · B1–B2</p>
+  </div>
+</header>
+
+<nav>
+  <a href="#task1">1 · Перевод</a>
+  <a href="#task2">2 · Определения</a>
+  <a href="#task3">3 · История</a>
+  <a href="#task4">4 · Одно слово</a>
+  <a href="#task5">5 · Ошибки</a>
+  <a href="#task6">6 · Ловушки</a>
+  <a href="#task7">7 · Speaking cards</a>
+</nav>
+
+<main>
+
+<!-- ЗАДАНИЕ 1 -->
+
+<section id="task1">
+<h2>Задание 1. Переведи на английский</h2>
+<p class="instructions">
+Напиши полный перевод каждого предложения.
+</p>
+
+<div id="translations1"></div>
+
+<button class="secondary" onclick="toggleAnswer('ans1')">
+Показать варианты ответов
+</button>
+
+<div class="answer" id="ans1">
+1. We need to close a deal.<br>
+2. I am responsible for this project.<br>
+3. She is in charge of the sales department.<br>
+4. We want to join your team.<br>
+5. The company offered me a new position.<br>
+6. They are hosting / organising a business meeting.<br>
+7. We made some small talk about the weather.<br>
+8. This beverage is in your budget.<br>
+9. I don't like eating on a full stomach.<br>
+10. She is on a diet.
+</div>
+</section>
+
+<!-- ЗАДАНИЕ 2 -->
+
+<section id="task2">
+<h2>Задание 2. Угадай слово по определению</h2>
+<p class="instructions">
+Впиши подходящее слово или выражение на английском.
+</p>
+
+<div id="definitions"></div>
+
+<button onclick="checkInputs('definitions', defAnswers, 'fb2')">
+Проверить
+</button>
+
+<button class="secondary" onclick="showKey('key2', defAnswers)">
+Показать ответы
+</button>
+
+<div class="feedback" id="fb2"></div>
+<div class="answer" id="key2"></div>
+</section>
+
+<!-- ЗАДАНИЕ 3 -->
+
+<section id="task3">
+<h2>Задание 3. Закончи историю</h2>
+<p class="instructions">
+Вставь слова из рамки. Каждое слово используется один раз.
+</p>
+
+<div class="wordbank">
+CV | position | application | experience | opportunity | invitation
+</div>
+
+<p>
+I saw an interesting job
+<input class="blank" id="story0" type="text"> online.
+
+I decided to send my
+<input class="blank" id="story1" type="text">
+and complete the
+<input class="blank" id="story2" type="text">
+form.
+
+I have three years of work
+<input class="blank" id="story3" type="text">.
+
+A week later, I received an
+<input class="blank" id="story4" type="text">
+to an interview.
+
+It was a great
+<input class="blank" id="story5" type="text">
+for me!
+</p>
+
+<button onclick="checkStory()">Проверить</button>
+<button class="secondary" onclick="showStory()">Показать ответы</button>
+
+<div class="feedback" id="fb3"></div>
+<div class="answer" id="key3">
+position · CV · application · experience · invitation · opportunity
+</div>
+</section>
+
+<!-- ЗАДАНИЕ 4 -->
+
+<section id="task4">
+<h2>Задание 4. Закончи предложение одним словом</h2>
+<p class="instructions">
+Впиши одно подходящее слово в каждый пропуск.
+</p>
+
+<div id="oneword"></div>
+
+<button onclick="checkInputs('oneword', oneAnswers, 'fb4')">
+Проверить
+</button>
+
+<button class="secondary" onclick="showKey('key4', oneAnswers)">
+Показать ответы
+</button>
+
+<div class="feedback" id="fb4"></div>
+<div class="answer" id="key4"></div>
+</section>
+
+<!-- ЗАДАНИЕ 5 -->
+
+<section id="task5">
+<h2>Задание 5. Найди ошибку в предложении</h2>
+<p class="instructions">
+В каждом предложении неправильно употреблено одно выделенное слово или предлог.
+Напиши правильную замену.
+</p>
+
+<div id="errors"></div>
+
+<button onclick="checkInputs('errors', errorAnswers, 'fb5')">
+Проверить
+</button>
+
+<button class="secondary" onclick="showKey('key5', errorAnswers)">
+Показать ответы
+</button>
+
+<div class="feedback" id="fb5"></div>
+<div class="answer" id="key5"></div>
+</section>
+
+<!-- ЗАДАНИЕ 6 -->
+
+<section id="task6">
+<h2>Задание 6. Перевод с ловушками</h2>
+<p class="instructions">
+Переведи на английский. Обрати внимание на похожие слова и устойчивые выражения.
+</p>
+
+<div id="translations6"></div>
+
+<button class="secondary" onclick="toggleAnswer('ans6')">
+Показать варианты ответов
+</button>
+
+<div class="answer" id="ans6">
+1. The employer offered me a position.<br>
+2. I want to work part-time.<br>
+3. He is responsible for organising meetings.<br>
+4. She quit her job.<br>
+5. The company hired a new employee.<br>
+6. We want to close a deal.<br>
+7. He is in charge of the human resources department. / He is in charge of HR.<br>
+8. I received an invitation to a job interview.<br>
+9. We made some small talk before the meeting.<br>
+10. This beverage is not in my budget.
+</div>
+</section>
+
+<!-- ЗАДАНИЕ 7 -->
+
+<section id="task7">
+
+<h2>Задание 7. 💼 You're the boss! — Let's start a business!</h2>
+
+<p class="instructions">
+<strong>Situation:</strong>
+You and your partner have decided to set up a new company.
+You have some money to invest, but you need to agree on what kind
+of business to start and who you need in your team.
+</p>
+
+<p>
+Your task is to create a company together and prepare to hire
+your first employees.
+</p>
+
+<p class="cards-intro">
+<strong>Speaking cards:</strong>
+Нажимай на карточку, чтобы увидеть дополнительную подсказку
+или полезные фразы. Обсудите все вопросы с партнёром.
+</p>
+
+<div class="card-grid">
+
+<!-- CARD 1 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 1 · Business idea</small>
+<strong>What kind of business would you like to set up? Why?</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Useful language</small>
+<strong>I'd like to set up…</strong>
+<span>
+What about setting up…?<br>
+I think we should…
+</span>
+</div>
+
+</div>
+</div>
+
+<!-- CARD 2 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 2 · Products & services</small>
+<strong>What products or services will your company offer?</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Think about</small>
+<strong>What will you sell or provide?</strong>
+<span>
+We will offer…<br>
+Our main product/service will be…
+</span>
+</div>
+
+</div>
+</div>
+
+<!-- CARD 3 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 3 · Customers</small>
+<strong>Who will your customers be?</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Think about</small>
+<strong>Who needs your product?</strong>
+<span>
+Our target customers are…<br>
+We want to attract…
+</span>
+</div>
+
+</div>
+</div>
+
+<!-- CARD 4 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 4 · What makes you special?</small>
+<strong>What will make your company different from other businesses?</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Useful language</small>
+<strong>In my opinion…</strong>
+<span>
+Our company will stand out because…<br>
+Unlike other companies,…
+</span>
+</div>
+
+</div>
+</div>
+
+<!-- CARD 5 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 5 · Your team</small>
+<strong>How many employees will you need at the beginning?</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Useful language</small>
+<strong>We will need… employees.</strong>
+<span>
+We should hire…<br>
+We need a full-time/part-time…
+</span>
+</div>
+
+</div>
+</div>
+
+<!-- CARD 6 -->
+
+<div class="flip-card" tabindex="0" role="button"
+onclick="flip(this)" onkeydown="cardKey(event,this)">
+
+<div class="flip-inner">
+
+<div class="card-face card-front">
+<small>Card 6 · Make a decision</small>
+<strong>Agree on your business idea and explain why it is the best choice.</strong>
+<span>Нажми, чтобы перевернуть</span>
+</div>
+
+<div class="card-face card-back">
+<small>Useful language</small>
+<strong>That's a good idea, but…</strong>
+<span>
+I agree. / I don't quite agree.<br>
+Let's close the deal!
+</span>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="wordbank" style="margin-top:20px">
+<strong>Useful language:</strong><br>
+I'd like to set up… · I think we should… ·
+What about setting up…? · That's a good idea, but… ·
+I agree / I don't quite agree. · In my opinion…
+</div>
+
+</section>
+
+<footer>
+Business English · Практика активной лексики
+</footer>
+
+</main>
+
+<script>
+
+// ЗАДАНИЯ НА ПЕРЕВОД
+
+const translation1 = [
+"Нам нужно заключить сделку.",
+"Я отвечаю за этот проект.",
+"Она руководит отделом продаж.",
+"Мы хотим присоединиться к вашей команде.",
+"Компания предложила мне новую должность.",
+"Они организуют деловую встречу.",
+"Мы немного поговорили о погоде.",
+"Этот напиток входит в ваш бюджет.",
+"Я не люблю есть на полный желудок.",
+"Она сейчас на диете."
+];
+
+const translation6 = [
+"Работодатель предложил мне должность.",
+"Я хочу работать неполный рабочий день.",
+"Он отвечает за организацию встреч.",
+"Она сама уволилась с работы.",
+"Компания наняла нового сотрудника.",
+"Мы хотим заключить сделку.",
+"Он руководит отделом кадров.",
+"Я получил приглашение на собеседование.",
+"Мы немного поговорили перед встречей.",
+"Этот напиток не входит в мой бюджет."
+];
+
+function renderTranslations(id, arr) {
+  document.getElementById(id).innerHTML =
+    arr.map((s, i) => `
+      <div class="item">
+        <label class="prompt" for="${id}_${i}">
+          ${i+1}. ${s}
+        </label>
+        <textarea id="${id}_${i}" placeholder="Your translation..."></textarea>
+      </div>
+    `).join("");
+}
+
+renderTranslations("translations1", translation1);
+renderTranslations("translations6", translation6);
+
+
+// ЗАДАНИЕ 2
+
+const defQs = [
+"A document that describes your education and work experience.",
+"A person who recommends you for a job.",
+"A particular job in a company.",
+"Knowledge or skills gained from working.",
+"A formal request for a job.",
+"A chance to do something.",
+"A person who manages the sales department.",
+"The department responsible for hiring people."
+];
+
+const defAnswers = [
+"CV",
+"reference",
+"position",
+"experience",
+"application",
+"opportunity",
+"head of sales",
+"human resources"
+];
+
+
+// ЗАДАНИЕ 4
+
+const oneQs = [
+"My company wants to _____ five new employees.",
+"He decided to _____ because he didn't like his job.",
+"The manager is going to _____ two employees.",
+"I want to _____ my own business.",
+"She is _____ for organising meetings.",
+"He is in _____ of the sales department.",
+"I received an _____ to a job interview.",
+"We need to close a _____ before Friday."
+];
+
+const oneAnswers = [
+"hire",
+"quit",
+"fire",
+"set up",
+"responsible",
+"charge",
+"invitation",
+"deal"
+];
+
+
+// ЗАДАНИЕ 5
+
+const errorQs = [
+"My employer works in the company and gets a salary.",
+"I fired my job because I wanted to travel.",
+"She works 10 hours a week, so she has a full-time job.",
+"He is responsible of the project.",
+"They are in charge for the team.",
+"I sent my beverage to the company.",
+"The company wants to quit a new employee."
+];
+
+const errorAnswers = [
+"employee",
+"quit",
+"part-time",
+"for",
+"of",
+"CV",
+"hire"
+];
+
+
+// СОЗДАНИЕ ПОЛЕЙ ДЛЯ ОТВЕТОВ
+
+function renderInputs(id, qs) {
+  document.getElementById(id).innerHTML =
+    qs.map((q, i) => `
+      <div class="item">
+        <label class="prompt" for="${id}_${i}">
+          ${i+1}. ${q}
+        </label>
+        <input
+          type="text"
+          id="${id}_${i}"
+          autocomplete="off"
+          placeholder="Your answer"
+        >
+      </div>
+    `).join("");
+}
+
+renderInputs("definitions", defQs);
+renderInputs("oneword", oneQs);
+renderInputs("errors", errorQs);
+
+
+// ПРОВЕРКА ОТВЕТОВ
+
+function norm(s) {
+  return s.toLowerCase()
+    .trim()
+    .replace(/[.!?]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function checkInputs(container, answers, fb) {
+
+  let good = 0;
+
+  answers.forEach((answer, i) => {
+
+    const el = document.getElementById(container + "_" + i);
+
+    const ok = norm(el.value) === norm(answer);
+
+    el.style.borderColor = ok ? "#55a477" : "#c85b5b";
+
+    if (ok) good++;
+
+  });
+
+  const box = document.getElementById(fb);
+
+  box.className = "feedback " +
+    (good === answers.length ? "correct" : "incorrect");
+
+  box.textContent =
+    `Правильно: ${good} из ${answers.length}.`;
+}
+
+
+// ПОКАЗ ОТВЕТОВ
+
+function showKey(id, answers) {
+
+  const el = document.getElementById(id);
+
+  el.innerHTML = answers
+    .map((a, i) => `${i+1}. ${a}`)
+    .join("<br>");
+
+  el.classList.add("show");
+}
+
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle("show");
+}
+
+
+// ЗАДАНИЕ 3
+
+function checkStory() {
+
+  const answers = [
+    "position",
+    "CV",
+    "application",
+    "experience",
+    "invitation",
+    "opportunity"
+  ];
+
+  let good = 0;
+
+  answers.forEach((answer, i) => {
+
+    const el = document.getElementById("story" + i);
+
+    const ok = norm(el.value) === norm(answer);
+
+    el.style.borderColor = ok ? "#55a477" : "#c85b5b";
+
+    if (ok) good++;
+
+  });
+
+  const feedback = document.getElementById("fb3");
+
+  feedback.className = "feedback " +
+    (good === 6 ? "correct" : "incorrect");
+
+  feedback.textContent = `Правильно: ${good} из 6.`;
+}
+
+function showStory() {
+  document.getElementById("key3").classList.add("show");
+}
+
+
+// ПЕРЕВОРОТ КАРТОЧЕК
+
+function flip(card) {
+  card.classList.toggle("flipped");
+}
+
+function cardKey(event, card) {
+
+  if (event.key === "Enter" || event.key === " ") {
+
+    event.preventDefault();
+    flip(card);
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
